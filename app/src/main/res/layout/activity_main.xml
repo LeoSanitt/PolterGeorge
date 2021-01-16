@@ -12,7 +12,7 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="1.0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dropdownButton"
         app:layout_constraintVertical_bias="1.0" />
@@ -21,7 +21,7 @@
         android:id="@+id/dropdownButton"
         android:layout_width="110dp"
         android:layout_height="40dp"
-        android:hint="Dropdown"
+        android:hint="@string/dropdown"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,15 +29,15 @@
         android:id="@+id/searchButton"
         android:layout_width="110dp"
         android:layout_height="40dp"
-        android:hint="Search"
+        android:hint= "@string/search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/TAppTitle"
+        android:id="@+id/TAPPTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TennisApp"
+        android:text="@string/tennisapp"
         app:layout_constraintEnd_toStartOf="@+id/searchButton"
         app:layout_constraintStart_toEndOf="@+id/dropdownButton"
         app:layout_constraintTop_toTopOf="parent" />
