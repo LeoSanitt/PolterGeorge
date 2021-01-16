@@ -37,7 +37,7 @@
         android:id="@+id/TappTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TApp"
+        android:text="TennisApp"
         app:layout_constraintEnd_toStartOf="@+id/searchButton"
         app:layout_constraintStart_toEndOf="@+id/dropdownButton"
         app:layout_constraintTop_toTopOf="parent" />
