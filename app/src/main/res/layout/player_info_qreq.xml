@@ -15,14 +15,14 @@
         android:layout_height="wrap_content"
         android:text="John"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/Playerstatsnelo"
+        app:layout_constraintEnd_toStartOf="@+id/PlayerELO"
         app:layout_constraintHorizontal_bias="0.393"
-        app:layout_constraintStart_toEndOf="@+id/button"
+        app:layout_constraintStart_toEndOf="@+id/ChallengeButton"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.491" />
 
     <TextView
-        android:id="@+id/Playerstatsnelo"
+        android:id="@+id/PlayerELO"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ELO = 2200"
@@ -31,8 +31,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="105"
+        android:id="@+id/ChallengeButton"
+        android:layout_width="105dp"
         android:hint="Challenge"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

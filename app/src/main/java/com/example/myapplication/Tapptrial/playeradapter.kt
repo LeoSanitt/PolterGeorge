@@ -5,15 +5,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
+import kotlinx.android.synthetic.main.player_info_qreq.view.*
 
 class playeradapter(
     private val players: MutableList<Player>
-) : RecyclerView.Adapter<playeradapter.playerviewh>() {
+) : RecyclerView.Adapter<playeradapter.playerVierHolder>() {
 
-    class playerviewh(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class playerVierHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): playerviewh {
-        return playerviewh(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): playerVierHolder {
+        return playerVierHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.player_info_qreq,
                 parent,
@@ -22,11 +23,21 @@ class playeradapter(
         )
     }
 
+    fun tempAddPlayer() {
+        players.add(Player("John", "1000"))
+        notifyItemInserted(players.size-1)
+    }
+
+
     override fun getItemCount(): Int {
         return players.size
     }
 
-    override fun onBindViewHolder(holder: playerviewh, position: Int) {
-        val cur
+    override fun onBindViewHolder(holder: playerVierHolder, position: Int) {
+        val curPlayer = players[position]
+        holder.itemView.apply{
+            Playerinf.text = curPlayer.playerTitle
+            PlayerELO.text = curPlayer.elo
+        }
     }
 }
