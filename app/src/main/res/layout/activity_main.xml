@@ -13,10 +13,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dropdownButton" />
+        app:layout_constraintTop_toBottomOf="@+id/btnDropdown" />
 
     <Button
-        android:id="@+id/dropdownButton"
+        android:id="@+id/btnDropdown"
         android:layout_width="110dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
@@ -27,7 +27,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/searchButton"
+        android:id="@+id/btnSearch"
         android:layout_width="110dp"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
@@ -38,14 +38,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/TAPPTitle"
+        android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/tennisapp"
+        android:text="@string/Clubhouse"
         android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@+id/rvPlayerItems"
-        app:layout_constraintEnd_toStartOf="@+id/searchButton"
-        app:layout_constraintStart_toEndOf="@+id/dropdownButton"
+        app:layout_constraintEnd_toStartOf="@+id/btnSearch"
+        app:layout_constraintStart_toEndOf="@+id/btnDropdown"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

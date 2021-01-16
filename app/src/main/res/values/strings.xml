@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">Clubhouse</string>
+    <string name="Clubhouse">Clubhouse</string>
     <string name="dropdown">Dropdown</string>
     <string name="search">Search</string>
     <string name="tennisapp">TennisApp</string>
+
 </resources>

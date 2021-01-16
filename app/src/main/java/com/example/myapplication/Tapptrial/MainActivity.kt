@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         rvPlayerItems.adapter = playeradapter
         rvPlayerItems.layoutManager = LinearLayoutManager(this)
 
-        dropdownButton.setOnClickListener{
+        btnDropdown.setOnClickListener{
             playeradapter.tempAddPlayer()
         }
     }
