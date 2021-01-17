@@ -16,6 +16,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:text="John"
+        android:textColor="@color/white"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -26,7 +27,9 @@
         android:id="@+id/btnPlayerELO"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="ELO = 2200"
+        android:background="@color/TAppMainGreen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,7 +37,9 @@
     <Button
         android:id="@+id/btnChallenge"
         android:layout_width="105dp"
+        android:textColorHint="@color/white"
         android:hint="Challenge"
+        android:backgroundTint="@color/TAppMainGreen"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

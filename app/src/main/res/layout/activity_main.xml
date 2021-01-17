@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/TAppMainGreen"
     tools:context=".Tapptrial.MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -22,10 +23,11 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
+        android:backgroundTint="@color/TAppMainGreen"
+        android:textColorHint="@color/white"
         android:hint="@string/dropdown"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/btnSearch"
         android:layout_width="110dp"
@@ -33,6 +35,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:backgroundTint="@color/TAppMainGreen"
+        android:textColorHint="@color/white"
         android:hint="@string/search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -43,6 +47,7 @@
         android:layout_height="wrap_content"
         android:text="@string/Clubhouse"
         android:textSize="25sp"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/rvPlayerItems"
         app:layout_constraintEnd_toStartOf="@+id/btnSearch"
         app:layout_constraintStart_toEndOf="@+id/btnDropdown"
