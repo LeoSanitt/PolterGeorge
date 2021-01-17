@@ -38,7 +38,7 @@
         android:id="@+id/btnChallenge"
         android:layout_width="105dp"
         android:textColorHint="@color/white"
-        android:hint="Challenge"
+        android:hint="@string/challenge"
         android:backgroundTint="@color/TAppMainGreen"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
