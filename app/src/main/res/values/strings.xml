@@ -4,5 +4,16 @@
     <string name="search">Search</string>
     <string name="tennisapp">TennisApp</string>
     <string name="challenge">Challenge</string>
+    <string name="enter_name">Name</string>
+    <string name="enter_club">Club</string>
+    <string name="enter_phone">Phone number</string>
+    <string name="login">Login</string>
+    <string name="no_club">Enter your club</string>
+    <string name="no_name">Enter your name</string>
+    <string name="no_phone">Enter your phone number</string>
+
+
+
+
 
 </resources>
