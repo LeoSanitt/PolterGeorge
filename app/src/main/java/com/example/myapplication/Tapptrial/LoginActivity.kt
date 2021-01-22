@@ -1,15 +1,26 @@
 package com.example.myapplication.Tapptrial
 
+import android.content.Intent
+import android.icu.util.TimeUnit
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import com.example.myapplication.R
-import com.google.android.material.snackbar.Snackbar
+import com.example.myapplication.VerifyActivity
+import com.google.android.gms.tasks.Task
+import com.google.firebase.FirebaseException
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.auth.*
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_login.*
-
 class LoginActivity : AppCompatActivity() {
+    private lateinit var auth: FirebaseAuth
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     private fun validateDetails(): Boolean {
         return when {
             TextUtils.isEmpty(etClub.text.toString().trim { it <= ' ' }) -> {
@@ -32,9 +43,49 @@ class LoginActivity : AppCompatActivity() {
             else -> true
         }
     }
+    private fun registerUser() {
+        if (validateDetails()) {
+            auth = Firebase.auth
+            val club = etClub.text.toString().trim { it <= ' '}
+            val name = etName.text.toString().trim { it <= ' '}
+            val phone = etPhoneNumber.text.toString().trim { it <= ' '}
+            val options = PhoneAuthOptions.newBuilder(auth)
+                .setPhoneNumber(phone)       // Phone number to verify
+                .setTimeout(60L, java.util.concurrent.TimeUnit.SECONDS) // Timeout and unit
+                .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks(){
+                    override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                        auth.signInWithCredential(credential)
+                            .addOnCompleteListener { task: Task<AuthResult> ->
+                                if (task.isSuccessful) {
+                                    firebaseAnalytics.setUserProperty("Club", club)
+                                    firebaseAnalytics.setUserProperty("Name", name)
+                                }
+                            }
+                    }
+                    override fun onVerificationFailed(e: FirebaseException) {
+                        Toast.makeText(applicationContext, R.string.logging_in_error, LENGTH_LONG).show()
+                    }
+
+                    override fun onCodeSent(verificationId: String, forceResendingToken: PhoneAuthProvider.ForceResendingToken) {
+                        val resendToken = forceResendingToken
+                        var intent = Intent(applicationContext,VerifyActivity::class.java)
+                        intent.putExtra("verificationId",verificationId)
+                        intent.putExtra("club", club)
+                        intent.putExtra("name", name)
+                        startActivity(intent)
+
+                    }
+                })
+                .setActivity(this)                 // Activity (for callback binding)
+                .build()
+            PhoneAuthProvider.verifyPhoneNumber(options)
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
+        firebaseAnalytics = Firebase.analytics
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        val login = btnLogin.setOnClickListener{validateDetails()}
-    }
+        btnLogin.setOnClickListener{if (validateDetails()) registerUser()}
+
+        }
 }
