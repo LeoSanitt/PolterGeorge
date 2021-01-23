@@ -1,42 +1,33 @@
 package com.example.myapplication.Tapptrial
-
 import android.content.Intent
-import android.icu.util.TimeUnit
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import com.example.myapplication.R
 import com.example.myapplication.VerifyActivity
 import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseException
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
     private fun validateDetails(): Boolean {
         return when {
             TextUtils.isEmpty(etClub.text.toString().trim { it <= ' ' }) -> {
-                val error = Toast.makeText(applicationContext, R.string.no_club, LENGTH_LONG)
-                error.show()
+                Toast.makeText(applicationContext, R.string.no_club, LENGTH_LONG).show()
                 false
             }
             TextUtils.isEmpty(etName.text.toString().trim { it <= ' ' }) -> {
-                val error = Toast.makeText(applicationContext, R.string.no_name, LENGTH_LONG)
-                error.show()
+                Toast.makeText(applicationContext, R.string.no_name, LENGTH_LONG).show()
                 false
 
             }
             TextUtils.isEmpty(etPhoneNumber.text.toString().trim { it <= ' ' }) -> {
-                val error = Toast.makeText(applicationContext, R.string.no_phone, LENGTH_LONG)
-                error.show()
+                Toast.makeText(applicationContext, R.string.no_phone, LENGTH_LONG).show()
                 false
 
             }
@@ -57,8 +48,6 @@ class LoginActivity : AppCompatActivity() {
                         auth.signInWithCredential(credential)
                             .addOnCompleteListener { task: Task<AuthResult> ->
                                 if (task.isSuccessful) {
-                                    firebaseAnalytics.setUserProperty("Club", club)
-                                    firebaseAnalytics.setUserProperty("Name", name)
                                 }
                             }
                     }
@@ -72,6 +61,7 @@ class LoginActivity : AppCompatActivity() {
                         intent.putExtra("verificationId",verificationId)
                         intent.putExtra("club", club)
                         intent.putExtra("name", name)
+                        intent.putExtra("phone", phone)
                         startActivity(intent)
 
                     }
@@ -82,7 +72,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
-        firebaseAnalytics = Firebase.analytics
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         btnLogin.setOnClickListener{if (validateDetails()) registerUser()}
