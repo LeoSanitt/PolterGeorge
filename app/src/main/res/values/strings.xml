@@ -15,4 +15,10 @@
     <string name="verify">Enter Verification Code</string>
     <string name="verify_button">Verify</string>
     <string name="register_success">Your account has been created</string>
+    <string name="closeButton">X</string>
+    <string name="WhAtSwRoNgWiTHyOuLeO">Please use camel case from now</string>
+    <string name="profpic">Temp Profpic</string>
+    <string name="BigmanJohn">John</string>
+    <string name="BigmanJohnsStats">Elo = 3000, Age = 26</string>
+    <string name="courtavfpop">Court Availabilities</string>
 </resources>

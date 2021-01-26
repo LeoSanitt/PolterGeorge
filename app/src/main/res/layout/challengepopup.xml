@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="330dp"
+    android:layout_height="560dp"
+    android:layout_gravity="center"
+    android:background="@color/godTierShadeOfGrey"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/popUpcloseButton"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:contentDescription="@string/closeButton"
+        android:src="@android:drawable/btn_dialog"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/popUpprofpic"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:contentDescription="@string/profpic"
+        android:src="@drawable/tappplayericon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/popUpcloseButton" />
+
+
+    <TextView
+        android:id="@+id/popUpname"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+        android:text="@string/BigmanJohn"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/popUpprofpic" />
+
+    <TextView
+        android:id="@+id/popUpStats"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center_horizontal"
+        android:text="@string/BigmanJohnsStats"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/popUpname" />
+
+    <TextView
+        android:id="@+id/popUpCourtavstext"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:gravity="center_horizontal"
+        android:text="@string/courtavfpop"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/popUpStats"
+        app:layout_constraintVertical_bias="0.05" />
+
+    <Spinner
+        android:id="@+id/dotw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/popUpCourtavstext"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Spinner
+        android:id="@+id/totd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dotw"
+        app:layout_constraintVertical_bias="0.313" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
