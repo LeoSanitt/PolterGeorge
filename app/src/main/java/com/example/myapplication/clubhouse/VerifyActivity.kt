@@ -1,13 +1,11 @@
-package com.example.myapplication
-import android.content.Intent
+package com.example.myapplication.clubhouse
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
-import android.widget.Toast.LENGTH_LONG
 import com.example.myapplication.Firebase.Firestore
-import com.example.myapplication.Tapptrial.MainActivity
+import com.example.myapplication.R
 import com.example.myapplication.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -16,22 +14,16 @@ import com.google.firebase.auth.PhoneAuthProvider
 
 class VerifyActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
-    fun userRegistrationSuccess(){
-        Toast.makeText(applicationContext, resources.getString(R.string.register_success), LENGTH_LONG).show()
-
-    }
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential,club: String,name: String, phone: String){
         auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful){
-                    val firebaseUser: FirebaseUser = task.result!!.user!!
-                    val user = User(firebaseUser.uid, name, club, phone)
-                    Firestore().registerUser(user, club)
-                    intent  = Intent(applicationContext, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful){
+                        val firebaseUser: FirebaseUser = task.result!!.user!!
+                        val user = User(firebaseUser.uid, name, club, phone)
+                        Firestore().registerUser(user, club)
+                        finish()
+                    }
                 }
-            }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

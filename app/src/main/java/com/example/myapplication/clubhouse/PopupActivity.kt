@@ -1,12 +1,8 @@
-package com.example.myapplication.Tapptrial
+package com.example.myapplication.clubhouse
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.R
-import kotlinx.android.synthetic.main.activity_main.*
 
 class SpinnerActivity : AppCompatActivity() {
 

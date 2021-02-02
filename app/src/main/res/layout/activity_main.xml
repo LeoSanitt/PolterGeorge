@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/TAppMainGreen"
-    tools:context=".Tapptrial.MainActivity">
+    tools:context=".clubhouse.MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvPlayerItems"
@@ -53,4 +53,29 @@
         app:layout_constraintStart_toEndOf="@+id/btnDropdown"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <FrameLayout
+        android:id="@+id/flChallenge"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rvPlayerItems" />
+
+    <FrameLayout
+        android:id="@+id/flPlayerList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rvPlayerItems"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

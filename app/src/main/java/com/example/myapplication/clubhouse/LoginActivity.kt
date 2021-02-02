@@ -1,12 +1,13 @@
-package com.example.myapplication.Tapptrial
+package com.example.myapplication.clubhouse
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
+import com.example.myapplication.Firebase.Firestore
 import com.example.myapplication.R
-import com.example.myapplication.VerifyActivity
+import com.example.myapplication.models.User
 import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
@@ -48,6 +49,11 @@ class LoginActivity : AppCompatActivity() {
                         auth.signInWithCredential(credential)
                             .addOnCompleteListener { task: Task<AuthResult> ->
                                 if (task.isSuccessful) {
+                                    val firebaseUser: FirebaseUser = task.result!!.user!!
+                                    val user = User(firebaseUser.uid, name, club, phone)
+                                    Firestore().registerUser(user, club)
+                                    intent  = Intent(applicationContext, AdditionalInfo::class.java)
+                                    startActivityForResult(intent,0)
                                 }
                             }
                     }
@@ -57,12 +63,13 @@ class LoginActivity : AppCompatActivity() {
 
                     override fun onCodeSent(verificationId: String, forceResendingToken: PhoneAuthProvider.ForceResendingToken) {
                         val resendToken = forceResendingToken
-                        var intent = Intent(applicationContext,VerifyActivity::class.java)
+                        var intent = Intent(applicationContext, VerifyActivity::class.java)
                         intent.putExtra("verificationId",verificationId)
                         intent.putExtra("club", club)
                         intent.putExtra("name", name)
                         intent.putExtra("phone", phone)
-                        startActivity(intent)
+                        finish()
+                        startActivityForResult(intent,0)
 
                     }
                 })
@@ -76,5 +83,5 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         btnLogin.setOnClickListener{if (validateDetails()) registerUser()}
 
-        }
+    }
 }
