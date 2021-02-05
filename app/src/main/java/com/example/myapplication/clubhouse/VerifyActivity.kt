@@ -19,7 +19,7 @@ class VerifyActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful){
                         val firebaseUser: FirebaseUser = task.result!!.user!!
-                        val user = User(firebaseUser.uid, name, club, phone)
+                        val user = User(userId = firebaseUser.uid, userName = name, userClub = club)
                         Firestore().registerUser(user, club)
                         finish()
                     }

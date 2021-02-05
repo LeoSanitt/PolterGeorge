@@ -14,12 +14,13 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
+import com.example.myapplication.models.User
 import kotlinx.android.synthetic.main.player_info_qreq.view.*
 
-class playeradapter (
-    var Players: MutableList<Player>,
+class PlayerAdapter (
+    var Users: MutableList<User>,
     val listener: OnItemClickListener
-    ) : RecyclerView.Adapter<playeradapter.PlayerViewHolder>() {
+    ) : RecyclerView.Adapter<PlayerAdapter.PlayerViewHolder>() {
 
     inner class PlayerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         init{
@@ -40,11 +41,11 @@ class playeradapter (
         return PlayerViewHolder(view)
     }
     override fun getItemCount(): Int {
-        return Players.size
+        return Users.size
     }
     override fun onBindViewHolder(holder: PlayerViewHolder, position: Int) {
         holder.itemView.apply {
-            tvPlayerName.text = Players[position].playerTitle
+            tvPlayerName.text = Users[position].userName
         }
     }
     interface OnItemClickListener{

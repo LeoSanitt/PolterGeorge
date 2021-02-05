@@ -50,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
                             .addOnCompleteListener { task: Task<AuthResult> ->
                                 if (task.isSuccessful) {
                                     val firebaseUser: FirebaseUser = task.result!!.user!!
-                                    val user = User(firebaseUser.uid, name, club, phone)
+                                    val user = User(userName = name, userId = firebaseUser.uid, userClub = club)
                                     Firestore().registerUser(user, club)
                                     intent  = Intent(applicationContext, AdditionalInfo::class.java)
                                     startActivityForResult(intent,0)

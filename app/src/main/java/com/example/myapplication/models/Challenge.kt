@@ -3,6 +3,8 @@ package com.example.myapplication.models
 class Challenge (
         val from: String = "",
         val to: String = "",
+        val fromName: String = "",
+        val toName: String = "",
         val court: String = "",
         val day: String = "",
         val hour: String = "",
