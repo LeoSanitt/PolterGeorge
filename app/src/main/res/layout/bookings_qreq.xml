@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:paddingStart="0dp"
+    android:paddingEnd="0dp">
+
+    <TextView
+        android:id="@+id/tvBookingName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Name"
+        android:textColor="@color/TAppMainGreen"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvBookingCourt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Court"
+        android:textColor="@color/TAppMainGreen"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvBookingDay"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvBookingName" />
+
+    <TextView
+        android:id="@+id/tvBookingDay"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Day"
+        android:textColor="@color/TAppMainGreen"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvBookingHour"
+        app:layout_constraintStart_toEndOf="@+id/tvBookingCourt"
+        app:layout_constraintTop_toBottomOf="@+id/tvBookingName" />
+
+    <TextView
+        android:id="@+id/tvBookingHour"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Hour"
+        android:textColor="@color/TAppMainGreen"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvBookingDay"
+        app:layout_constraintTop_toBottomOf="@+id/tvBookingName" />
+
+    <ImageView
+        android:id="@+id/imgCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_baseline_cancel_24" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

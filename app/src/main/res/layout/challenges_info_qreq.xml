@@ -4,50 +4,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:paddingStart="8dp"
-    android:paddingEnd="8dp">
+    android:paddingStart="0dp"
+    android:paddingEnd="0dp">
 
     <TextView
         android:id="@+id/tvName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
         android:text="Name"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tvCourt"
+        android:textColor="@color/TAppMainGreen"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnAccept"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvCourt"/>
 
     <TextView
         android:id="@+id/tvCourt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
         android:text="Court"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tvDay"
+        android:textSize="20sp"
+        android:textColor="@color/TAppMainGreen"
+
+        app:layout_constraintBottom_toTopOf="@+id/btnReject"
         app:layout_constraintStart_toEndOf="@+id/tvName"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvDay"/>
 
     <TextView
         android:id="@+id/tvDay"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
         android:text="Day"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="20sp"
+        android:textColor="@color/TAppMainGreen"
+        app:layout_constraintBottom_toTopOf="@+id/btnReject"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tvHour"
-        app:layout_constraintStart_toEndOf="@+id/tvCourt"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/tvCourt" />
 
     <TextView
         android:id="@+id/tvHour"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
         android:text="Hour"
+        android:textSize="20sp"
+        android:textColor="@color/TAppMainGreen"
+        app:layout_constraintBottom_toTopOf="@+id/btnReject"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvDay"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btnAccept"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:text="@string/accept"
+        android:backgroundTint="@color/TAppMainGreen"
+        android:textColor="@color/creamy_white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnReject"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnReject"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:text="@string/reject"
+        android:backgroundTint="@color/TAppMainGreen"
+        android:textColor="@color/creamy_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvDay"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/btnAccept" />
 </androidx.constraintlayout.widget.ConstraintLayout>

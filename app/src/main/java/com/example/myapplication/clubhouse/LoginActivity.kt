@@ -8,6 +8,7 @@ import android.widget.Toast.LENGTH_LONG
 import com.example.myapplication.Firebase.Firestore
 import com.example.myapplication.R
 import com.example.myapplication.models.User
+import com.example.myapplication.utils.Variables
 import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
@@ -32,6 +33,7 @@ class LoginActivity : AppCompatActivity() {
                 false
 
             }
+            etClub.toString() !in Variables.allClubs -> { false }
             else -> true
         }
     }
@@ -80,6 +82,7 @@ class LoginActivity : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Firestore().getAllClubs()
         setContentView(R.layout.activity_login)
         btnLogin.setOnClickListener{if (validateDetails()) registerUser()}
 

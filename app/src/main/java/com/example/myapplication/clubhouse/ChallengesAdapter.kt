@@ -5,14 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.Firebase.Firestore
 import com.example.myapplication.R
 import com.example.myapplication.utils.Variables
 import kotlinx.android.synthetic.main.challenges_info_qreq.view.*
-import kotlinx.android.synthetic.main.player_info_qreq.view.*
-import android.view.GestureDetector
-import android.view.GestureDetector.SimpleOnGestureListener
-import android.view.MotionEvent
+
 
 class ChallengesAdapter (
     var Challenges: MutableList<Challenge>,
@@ -21,20 +17,27 @@ class ChallengesAdapter (
 
     inner class ChallengesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         init{
+            itemView.btnReject.setOnClickListener{
+                val position: Int = adapterPosition
+                if (position != RecyclerView.NO_POSITION){
+                    listener.onReject(position)
+                }
+            }
+            itemView.btnAccept.setOnClickListener{
+                val position: Int = adapterPosition
+                if (position != RecyclerView.NO_POSITION){
+                    listener.onAccept(position)
+                }
+            }
             itemView.setOnClickListener(this)
         }
 
         override fun onClick(v: View?) {
-            val position: Int = adapterPosition
-            if (position != RecyclerView.NO_POSITION) {
-                listener.onItemClick(position)
-            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChallengesViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.challenges_info_qreq, parent, false)
-
         return ChallengesViewHolder(view)
     }
     override fun getItemCount(): Int {
@@ -49,11 +52,12 @@ class ChallengesAdapter (
                 tvName.text = Challenges[position].toName
             }
             tvCourt.text = Challenges[position].court
-            tvDay.text = Challenges[position].day
+            tvDay.text = Challenges[position].date
             tvHour.text = Challenges[position].hour
         }
     }
     interface OnItemClickListener{
-        fun onItemClick(position: Int)
+        fun onAccept(position: Int)
+        fun onReject(position: Int)
     }
 }

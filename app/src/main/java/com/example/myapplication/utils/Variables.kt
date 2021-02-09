@@ -10,6 +10,7 @@ object Variables {
     var allUsersLive = MutableLiveData<MutableList<User>>()
     var allChallengesLive = MutableLiveData<MutableList<Challenge>>()
     var allChallenges: MutableList<Challenge> = mutableListOf()
+    var allBookings: MutableList<Challenge> = mutableListOf()
     var userClub: String = ""
     var userName: String = ""
     var challengedIdLive =  MutableLiveData<String>()
@@ -26,4 +27,7 @@ object Variables {
     var clubCourts: MutableList<String> = mutableListOf()
     var freeHoursWithDay: MutableList<String> = mutableListOf()
     var freeHoursWithDayLive = MutableLiveData<MutableList<String>>()
+    var allClubs: MutableList<String> = mutableListOf()
+    var days: MutableList<String> = mutableListOf()
+    var date: String = ""
 }

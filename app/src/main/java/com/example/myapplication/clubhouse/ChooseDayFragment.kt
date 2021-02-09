@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_choose_day.*
 class ChooseDayFragment : Fragment(R.layout.fragment_choose_day), DayAdapter.OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        rvDays.adapter = DayAdapter(Constants.DAYS, this)
+        rvDays.adapter = DayAdapter(Variables.days, this)
         rvDays.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         rvDays.layoutManager = LinearLayoutManager(context)
         }
@@ -23,7 +23,8 @@ class ChooseDayFragment : Fragment(R.layout.fragment_choose_day), DayAdapter.OnI
 
 
     override fun onItemClick(position: Int) {
-        Variables.chosenDay = Constants.DAYS[position]
+        Variables.date = Variables.days[position]
+        Variables.chosenDay = Variables.date.split("-")[0]
         Variables.chosenDayLive.apply {postValue(Variables.chosenDay)}
     }
 }
