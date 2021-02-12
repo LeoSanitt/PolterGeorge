@@ -1,6 +1,8 @@
 package com.example.myapplication.clubhouse
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_player_list.*
 class AllChallengesFragment : Fragment(R.layout.fragment_all_challenges), ChallengesAdapter.OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setUpRV()
+
     }
 
 
@@ -27,12 +30,16 @@ class AllChallengesFragment : Fragment(R.layout.fragment_all_challenges), Challe
         Firestore().acceptChallenge(Variables.allChallenges[position])
         Variables.allChallenges.removeAt(position)
         setUpRV()
+        Variables.textToDisplayLive.observe(this, androidx.lifecycle.Observer {
+            Toast.makeText(context, Variables.textToDisplay, Toast.LENGTH_SHORT).show()
+        })
     }
 
     override fun onReject(position: Int) {
         Firestore().rejectChallenge(Variables.allChallenges[position])
         Variables.allChallenges.removeAt(position)
         setUpRV()
+        Toast.makeText(context, "Booking rejected", Toast.LENGTH_SHORT).show()
     }
     private fun setUpRV(){
         rvChallenges.adapter = ChallengesAdapter(Variables.allChallenges, this)

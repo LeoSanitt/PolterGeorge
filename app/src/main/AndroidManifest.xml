@@ -5,18 +5,16 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/Clubhouse"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:label="@string/Clubhouse"
         android:theme="@style/Theme.MyApplication">
-        <activity android:name=".clubhouse.LaunchActivity"></activity>
         <activity android:name=".clubhouse.VerifyActivity" />
         <activity android:name=".clubhouse.AdditionalInfo" />
         <activity android:name=".clubhouse.LoginActivity" />
         <activity android:name=".clubhouse.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

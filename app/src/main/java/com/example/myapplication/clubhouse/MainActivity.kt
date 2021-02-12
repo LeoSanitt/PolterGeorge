@@ -5,9 +5,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -48,16 +51,21 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
         setContentView(R.layout.activity_main)
+        //val toolbar = findViewById<Toolbar>(R.id.bottomToolbar)
+        //setActionBar(toolbar)
         Variables.days = getDays()
-        btnChallenges.setOnClickListener {
+
+        tvChallenges.setOnClickListener {
             loadAllChallengesFragment()
         }
-        btnPlayers.setOnClickListener {
+        tvPlayers.setOnClickListener {
             loadPlayerList()
         }
-        btnBookings.setOnClickListener {
+        tvBookings.setOnClickListener {
             loadBookings()
         }
+
+
         Firestore().userInfo()
         Variables.allUsersLive.observe(this, androidx.lifecycle.Observer {
             loadPlayerList()
@@ -69,17 +77,26 @@ class MainActivity : AppCompatActivity() {
             Firestore().findAvailableHours()
 
         })
-        Variables.chosenHourLive.observe(this, androidx.lifecycle.Observer {
+
+        Variables.messageLive.observe(this, androidx.lifecycle.Observer {
             Firestore().sendChallenge(
                 to = Variables.challengedId,
                 court = Variables.chosenCourt,
                 day = Variables.chosenDay,
                 hour = Variables.chosenHour
-            )
+                )
             supportFragmentManager.beginTransaction().apply {
                 clearFragmentsFromContainer()
                 replace(R.id.flMAIN, PlayerList())
             }
+        })
+
+
+        Variables.chosenHourLive.observe(this, androidx.lifecycle.Observer {
+            supportFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.flChallengeDetails, AddMessageFragment())
+                .commit()
         })
         Variables.chosenCourtLive.observe(this, androidx.lifecycle.Observer {
             supportFragmentManager.beginTransaction()
@@ -93,7 +110,21 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.flChallengeDetails, ChooseHourFragment())
                 .commit()
         })
+
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.app_bar_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+
+        }
+        return true
+    }
+
 
 
     private fun loadChallengeFragment() {
@@ -131,7 +162,14 @@ class MainActivity : AppCompatActivity() {
             commit()
         }
     }
-
+    private fun loadMessage(){
+        supportFragmentManager.beginTransaction().apply {
+            clearFragmentsFromContainer()
+            addToBackStack(null)
+            replace(R.id.flMAIN, AddMessageFragment())
+            commit()
+        }
+    }
     private fun clearFragmentsFromContainer() {
         val fragments = supportFragmentManager.fragments
         for (fragment in fragments) {

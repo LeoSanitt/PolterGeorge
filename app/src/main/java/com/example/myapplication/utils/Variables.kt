@@ -30,4 +30,8 @@ object Variables {
     var allClubs: MutableList<String> = mutableListOf()
     var days: MutableList<String> = mutableListOf()
     var date: String = ""
+    var textToDisplay = ""
+    var textToDisplayLive = MutableLiveData<String>()
+    var message: String = ""
+    var messageLive = MutableLiveData<String>()
 }

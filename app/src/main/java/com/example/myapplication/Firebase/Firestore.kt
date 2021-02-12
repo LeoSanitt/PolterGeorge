@@ -1,9 +1,12 @@
 package com.example.myapplication.Firebase
+import android.content.Context
 import android.service.notification.Condition.newId
 import android.util.Log
+import android.widget.Toast
 import com.example.myapplication.models.*
 import com.example.myapplication.utils.Constants
 import com.example.myapplication.utils.Variables
+import com.google.errorprone.annotations.Var
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -56,77 +59,100 @@ class Firestore {
         return currentUserId
     }
 
-    fun userInfo(){
+    fun userInfo() {
         val id = Variables.id
         mFirestore.collection(Constants.USERSNOTCLUBS).document(id).get()
-                .addOnSuccessListener { document ->
-                    val thisUser = document.toObject(User::class.java)
-                    Variables.userClub = thisUser!!.userClub
-                    Variables.userName = thisUser.userName
-                    val users = mutableListOf<User>()
-                    Log.d("checking whether club", Variables.userClub)
-                    mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.USERS).get().addOnSuccessListener { result ->
-                        for (document in result) {
-                            val currentPlayer = document.toObject(User::class.java)
-                            users.add(User(currentPlayer.userName, currentPlayer.userId, currentPlayer.userAge,currentPlayer.userGender, Variables.userClub))
-                        }
-                        Variables.allUsers = users
-                        Variables.allUsersLive.setValue(users)
+            .addOnSuccessListener { document ->
+                val thisUser = document.toObject(User::class.java)
+                Variables.userClub = thisUser!!.userClub
+                Variables.userName = thisUser.userName
+                val users = mutableListOf<User>()
+                Log.d("checking whether club", Variables.userClub)
+                mFirestore.collection(Constants.CLUBS).document(Variables.userClub)
+                    .collection(Constants.USERS).get().addOnSuccessListener { result ->
+                    for (document in result) {
+                        val currentPlayer = document.toObject(User::class.java)
+                        users.add(
+                            User(
+                                currentPlayer.userName,
+                                currentPlayer.userId,
+                                currentPlayer.userAge,
+                                currentPlayer.userGender,
+                                Variables.userClub
+                            )
+                        )
                     }
-                    mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES).whereEqualTo("to", Variables.id)
-                        .whereEqualTo("rejected", false).whereEqualTo("accepted", false).get().addOnSuccessListener { result ->
+                    Variables.allUsers = users
+                    Variables.allUsersLive.setValue(users)
+                }
+                mFirestore.collection(Constants.CLUBS).document(Variables.userClub)
+                    .collection(Constants.CHALLENGES).whereArrayContains(Constants.PLAYERS, Variables.id).whereEqualTo("toName", Variables.userName)
+                    .whereEqualTo("rejected", false).whereEqualTo("accepted", false).get()
+                    .addOnSuccessListener { result ->
                         Variables.allChallenges = mutableListOf()
-                        for (challenge in result){
+                        for (challenge in result) {
                             Variables.allChallenges.add(challenge.toObject(Challenge::class.java))
                         }
                     }
-                    mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES)
-                        .whereEqualTo("to", Variables.id).whereEqualTo("rejected", false).whereEqualTo("accepted", false)
-                        .addSnapshotListener { snapshots, error ->
-                            if (error!=null){
-                                return@addSnapshotListener
+                mFirestore.collection(Constants.CLUBS).document(Variables.userClub)
+                    .collection(Constants.CHALLENGES)
+                    .whereArrayContains(Constants.PLAYERS, Variables.id).whereEqualTo("toName", Variables.userName).whereEqualTo("rejected", false)
+                    .whereEqualTo("accepted", false)
+                    .addSnapshotListener { snapshots, error ->
+                        if (error != null) {
+                            return@addSnapshotListener
+                        }
+                        Variables.allChallenges = mutableListOf()
+                        for (challenge in snapshots!!) {
+                            val toAdd = challenge.toObject(Challenge::class.java)
+                            if (toAdd.players[0] == Variables.id && toAdd !in Variables.allChallenges) {
+                                Variables.allChallenges.add(toAdd)
                             }
-                            Variables.allChallenges = mutableListOf()
-                            for (challenge in snapshots!!){
-                                val toAdd = challenge.toObject(Challenge::class.java)
-                                if (toAdd.to == Variables.id && toAdd !in Variables.allChallenges) {
-                                    Variables.allChallenges.add(toAdd)
-                                }
-                            }
-                    }
-                    mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.BOOKINGS).get().addOnSuccessListener { result ->
-                        Variables.clubCourts = mutableListOf()
-                        for (court in result){
-                            Variables.clubCourts.add(court.toObject(Court::class.java).name)
                         }
                     }
-                    mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES).whereEqualTo("from",Variables.id).whereEqualTo("accepted", true).get().addOnSuccessListener { result ->
-                        for (booking in result){
+                mFirestore.collection(Constants.CLUBS).document(Variables.userClub)
+                    .collection(Constants.BOOKINGS).get().addOnSuccessListener { result ->
+                    Variables.clubCourts = mutableListOf()
+                    for (court in result) {
+                        Variables.clubCourts.add(court.toObject(Court::class.java).name)
+                    }
+                }
+                mFirestore.collection(Constants.CLUBS).document(Variables.userClub)
+                    .collection(Constants.CHALLENGES).whereArrayContains(Constants.PLAYERS, Variables.id)
+                    .whereEqualTo("accepted", true).get().addOnSuccessListener { result ->
+                        Variables.allBookings = mutableListOf()
+
+                        for (booking in result) {
                             Variables.allBookings.add(booking.toObject(Challenge::class.java))
                         }
+                        Log.d("YIPEE", result.toString())
+
                     }
-                    mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES)
-                        .whereEqualTo("to", Variables.id).whereEqualTo("rejected", false).whereEqualTo("accepted", true)
-                        .addSnapshotListener { snapshots, error ->
-                            if (error!=null){
-                                return@addSnapshotListener
-                            }
-                            Variables.allBookings = mutableListOf()
-                            for (booking in snapshots!!){
-                                val toAdd = booking.toObject(Challenge::class.java)
-                                if (toAdd.to == Variables.id && toAdd !in Variables.allBookings) {
-                                    Variables.allBookings.add(toAdd)
-                                }
-                            }
+                mFirestore.collection(Constants.CLUBS).document(Variables.userClub)
+                    .collection(Constants.CHALLENGES)
+                    .whereArrayContains(Constants.PLAYERS, Variables.id).whereEqualTo("accepted", true)
+                    .addSnapshotListener { snapshots, error ->
+                        if (error != null) {
+                            return@addSnapshotListener
                         }
-                }
+                        Variables.allBookings = mutableListOf()
+                        for (booking in snapshots!!) {
+                            val toAdd = booking.toObject(Challenge::class.java)
+                            Variables.allBookings.add(toAdd)
 
+                        }
+                    }
 
-
+            }
     }
 
     fun sendChallenge(to: String, court: String, day: String, hour: String) {
-        mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES).add(Challenge(Variables.id, to, Variables.userName, Variables.challengedName, court, Variables.date, hour))
+        var accept = false
+        if (Variables.challengedName == Constants.BOOKINGS){
+            accept = true
+        }
+        mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES).add(Challenge(
+            players=mutableListOf(Variables.id, Variables.challengedId), fromName=Variables.userName, toName=Variables.challengedName, court=court, date=Variables.date, hour=hour, accepted = accept, message = Variables.message))
             .addOnSuccessListener { documentReference ->
                 documentReference.update("uniqueId",documentReference.id)
 
@@ -162,7 +188,22 @@ class Firestore {
         mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES).document(challenge.uniqueId).update("rejected", true)
     }
     fun acceptChallenge(challenge: Challenge){
-        mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES).document(challenge.uniqueId).update("accepted", true)
+        mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES)
+            .whereEqualTo("accepted", true).whereEqualTo("date", challenge.date).whereEqualTo("hour", challenge.hour).get().addOnSuccessListener { result ->
+                if(result.isEmpty){
+                    mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES).document(challenge.uniqueId).update("accepted", true)
+                    Variables.textToDisplay = "Booking made!"
+                    Variables.textToDisplayLive.apply{setValue(Variables.textToDisplay)}
+                }
+
+                else {
+                    mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES).document(challenge.uniqueId).update("rejected", true)
+                    Variables.textToDisplay = "Booking failed - time already taken"
+                    Variables.textToDisplayLive.apply{setValue(Variables.textToDisplay)}
+                }
+
+            }
+
 
     }
 

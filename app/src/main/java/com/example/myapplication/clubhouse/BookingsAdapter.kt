@@ -25,7 +25,6 @@ class BookingsAdapter (
                         listener.onCancel(position)
                     }
                 }
-                //itemView.setOnClickListener(this)
             }
             override fun onClick(v: View?) {
             }
@@ -46,7 +45,7 @@ class BookingsAdapter (
                 tvBookingCourt.text = " on "+Bookings[position].court
                 tvBookingDay.text = " on "+Bookings[position].date.split("-")[0] + Bookings[position].date.split("-")[1]
                 tvBookingHour.text = " at "+Bookings[position].hour + " O'clock"
-                if (Bookings[position].to==Variables.id) {
+                if (Bookings[position].players[0]==Variables.id) {
                     tvBookingName.text = "Match against" + Bookings[position].fromName
                 }
                 else{tvBookingName.text = "Match against" + Bookings[position].toName}

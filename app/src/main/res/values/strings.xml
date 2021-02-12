@@ -32,4 +32,7 @@
     <string name="reject">REJECT</string>
     <string name="bookings">Bookings</string>
     <string name="notifications">NOTIFICATIONS</string>
+    <string name="make_booking">Making booking</string>
+    <string name="message">Message</string>
+
 </resources>
