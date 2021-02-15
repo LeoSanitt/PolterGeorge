@@ -29,17 +29,16 @@ class BookingsFragment : Fragment(R.layout.fragment_bookings),BookingsAdapter.On
     }
 
     override fun showBookingDetails(position: Int) {
-        Log.d("hi there", "hello")
     }
 
     override fun onCancel(position: Int) {
-        Firestore().cancelBooking(Variables.allBookings[position])
-        Variables.allBookings.removeAt(position)
+        Firestore().cancelBooking(Variables.allBookingsDisplay[position])
+        Variables.allBookingsDisplay.removeAt(position)
         setUpRV()
         Toast.makeText(context, "Booking cancelled", Toast.LENGTH_SHORT).show()
     }
     private fun setUpRV(){
-        rvBookings.adapter = BookingsAdapter(Variables.allBookings, this)
+        rvBookings.adapter = BookingsAdapter(Variables.allBookingsDisplay, this)
         rvBookings.addItemDecoration(
             DividerItemDecoration(
                 context,

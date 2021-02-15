@@ -1,5 +1,6 @@
 package com.example.myapplication.clubhouse
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -14,14 +15,16 @@ import com.google.firebase.auth.PhoneAuthProvider
 
 class VerifyActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
-    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential,club: String,name: String, phone: String){
+    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential){
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful){
                         val firebaseUser: FirebaseUser = task.result!!.user!!
-                        val user = User(userId = firebaseUser.uid, userName = name, userClub = club)
-                        Firestore().registerUser(user, club)
+                        val user = User(userId = firebaseUser.uid)
+                        Firestore().registerUser(user)
                         finish()
+                        intent  = Intent(applicationContext, AdditionalInfo::class.java)
+                        startActivityForResult(intent, 0)
                     }
                 }
     }
@@ -32,14 +35,11 @@ class VerifyActivity : AppCompatActivity() {
         val verify = findViewById<Button>(R.id.btnVerify)
         val otpGiven=findViewById<EditText>(R.id.etCode)
         val storedId = intent.getStringExtra("verificationId")
-        val club = intent.getStringExtra("club")
-        val name = intent.getStringExtra("name")
-        val phone = intent.getStringExtra("phone")
         verify.setOnClickListener{
             var otp=otpGiven.text.toString().trim()
             if (otp.isNotEmpty()){
                 val credential : PhoneAuthCredential = PhoneAuthProvider.getCredential(storedId.toString(), otp)
-                signInWithPhoneAuthCredential(credential, club.toString(), name.toString(), phone.toString())
+                signInWithPhoneAuthCredential(credential)
             }else{ }
         }
 

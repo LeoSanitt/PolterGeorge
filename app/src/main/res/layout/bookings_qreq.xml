@@ -15,7 +15,8 @@
         android:text="Name"
         android:textColor="@color/TAppMainGreen"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/tvMatchAgainst"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -25,40 +26,77 @@
         android:text="Court"
         android:textColor="@color/TAppMainGreen"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tvBookingDay"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvBookingName" />
+        app:layout_constraintBottom_toBottomOf="@+id/tvBookingHour"
+        app:layout_constraintStart_toEndOf="@+id/tvBookingHour"
+        app:layout_constraintTop_toTopOf="@+id/tvBookingHour" />
 
     <TextView
         android:id="@+id/tvBookingDay"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:text="Day"
         android:textColor="@color/TAppMainGreen"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tvBookingHour"
-        app:layout_constraintStart_toEndOf="@+id/tvBookingCourt"
-        app:layout_constraintTop_toBottomOf="@+id/tvBookingName" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvBookingHour"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Hour"
+        android:textStyle="bold"
         android:textColor="@color/TAppMainGreen"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvBookingDay"
-        app:layout_constraintTop_toBottomOf="@+id/tvBookingName" />
+        app:layout_constraintBottom_toBottomOf="@+id/tvAtBooking"
+        app:layout_constraintStart_toEndOf="@+id/tvAtBooking"
+        app:layout_constraintTop_toTopOf="@+id/tvAtBooking" />
 
     <ImageView
         android:id="@+id/imgCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_baseline_cancel_24" />
+
+    <TextView
+        android:id="@+id/tvMatchAgainst"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Opponent: "
+        android:textColor="@color/TAppMainGreen"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvMonthBooking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Month"
+        android:textColor="@color/TAppMainGreen"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvBookingDay" />
+
+    <TextView
+        android:id="@+id/tvAtBooking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text=" at "
+        android:textSize="20sp"
+        android:textColor="@color/TAppMainGreen"
+        app:layout_constraintBottom_toBottomOf="@+id/tvMonthBooking"
+        app:layout_constraintStart_toEndOf="@+id/tvBookingDay"
+        app:layout_constraintTop_toTopOf="@+id/tvBookingDay" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

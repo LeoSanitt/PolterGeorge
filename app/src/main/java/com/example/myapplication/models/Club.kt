@@ -1,5 +1,5 @@
 package com.example.myapplication.models
 
 data class Club (
-    val name: String = ""
+        val name: String = ""
 )

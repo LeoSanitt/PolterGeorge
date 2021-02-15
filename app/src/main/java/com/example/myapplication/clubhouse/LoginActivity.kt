@@ -19,29 +19,18 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private fun validateDetails(): Boolean {
         return when {
-            TextUtils.isEmpty(etClub.text.toString().trim { it <= ' ' }) -> {
-                Toast.makeText(applicationContext, R.string.no_club, LENGTH_LONG).show()
-                false
-            }
-            TextUtils.isEmpty(etName.text.toString().trim { it <= ' ' }) -> {
-                Toast.makeText(applicationContext, R.string.no_name, LENGTH_LONG).show()
-                false
-
-            }
             TextUtils.isEmpty(etPhoneNumber.text.toString().trim { it <= ' ' }) -> {
                 Toast.makeText(applicationContext, R.string.no_phone, LENGTH_LONG).show()
                 false
 
             }
-            etClub.toString() !in Variables.allClubs -> { false }
+
             else -> true
         }
     }
     private fun registerUser() {
         if (validateDetails()) {
             auth = Firebase.auth
-            val club = etClub.text.toString().trim { it <= ' '}
-            val name = etName.text.toString().trim { it <= ' '}
             val phone = etPhoneNumber.text.toString().trim { it <= ' '}
             val options = PhoneAuthOptions.newBuilder(auth)
                 .setPhoneNumber(phone)       // Phone number to verify
@@ -52,8 +41,8 @@ class LoginActivity : AppCompatActivity() {
                             .addOnCompleteListener { task: Task<AuthResult> ->
                                 if (task.isSuccessful) {
                                     val firebaseUser: FirebaseUser = task.result!!.user!!
-                                    val user = User(userName = name, userId = firebaseUser.uid, userClub = club)
-                                    Firestore().registerUser(user, club)
+                                    val user = User(userId = firebaseUser.uid)
+                                    Firestore().registerUser(user)
                                     intent  = Intent(applicationContext, AdditionalInfo::class.java)
                                     startActivityForResult(intent,0)
                                 }
@@ -67,9 +56,6 @@ class LoginActivity : AppCompatActivity() {
                         val resendToken = forceResendingToken
                         var intent = Intent(applicationContext, VerifyActivity::class.java)
                         intent.putExtra("verificationId",verificationId)
-                        intent.putExtra("club", club)
-                        intent.putExtra("name", name)
-                        intent.putExtra("phone", phone)
                         finish()
                         startActivityForResult(intent,0)
 

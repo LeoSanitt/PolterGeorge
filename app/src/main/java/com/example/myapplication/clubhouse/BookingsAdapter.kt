@@ -43,12 +43,13 @@ class BookingsAdapter (
         override fun onBindViewHolder(holder: BookingsViewHolder, position: Int) {
             holder.itemView.apply {
                 tvBookingCourt.text = " on "+Bookings[position].court
-                tvBookingDay.text = " on "+Bookings[position].date.split("-")[0] + Bookings[position].date.split("-")[1]
-                tvBookingHour.text = " at "+Bookings[position].hour + " O'clock"
+                tvBookingDay.text =  Bookings[position].date.split("-")[1]
+                tvBookingHour.text = Bookings[position].hour
+                tvMonthBooking.text = Bookings[position].date.split("-")[2]
                 if (Bookings[position].players[0]==Variables.id) {
-                    tvBookingName.text = "Match against" + Bookings[position].fromName
+                    tvBookingName.text =   Bookings[position].fromName
                 }
-                else{tvBookingName.text = "Match against" + Bookings[position].toName}
+                else{tvBookingName.text = Bookings[position].toName}
             }
         }
     interface OnItemClickListener{

@@ -38,9 +38,14 @@
                     android:id="@+id/searchView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintEnd_toStartOf="@+id/spinner"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginBottom="50dp"
+                    android:actionLayout="@layout/search_view"
+                    android:maxWidth="50dp"
+                    android:theme="@style/AppSearchView"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvChallenges"
+                    app:layout_constraintEnd_toStartOf="@+id/spSettings"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/tvClubhouse" />
 
                 <TextView
                     android:id="@+id/tvClubhouse"
@@ -48,21 +53,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="8dp"
-                    android:text="@string/Clubhouse"
+                    android:text="@string/MatchPoint"
                     android:textAlignment="center"
                     android:textColor="@color/creamy_white"
                     android:textSize="30sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@id/tvPlayers"
-                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    app:layout_constraintStart_toEndOf="@+id/spFilter"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tvPlayers"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_height="0dp"
+                    android:gravity="center"
                     android:text="Players"
                     android:textAlignment="center"
                     android:textColor="@color/creamy_white"
@@ -76,9 +80,8 @@
                 <TextView
                     android:id="@+id/tvBookings"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_height="0dp"
+                    android:gravity="center"
                     android:text="Bookings"
                     android:textAlignment="center"
                     android:textSize="20sp"
@@ -92,8 +95,7 @@
                     android:id="@+id/tvChallenges"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:gravity="center"
                     android:text="Challenges"
                     android:textAlignment="center"
                     android:textSize="20sp"
@@ -103,25 +105,34 @@
                     app:layout_constraintStart_toEndOf="@+id/tvBookings"
                     app:layout_constraintTop_toBottomOf="@id/tvClubhouse" />
 
-                <ImageView
-                    android:id="@+id/imageView"
+                <Spinner
+                    android:id="@+id/spFilter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
+                    android:background="@drawable/ic_baseline_filter_list_24"
+                    android:scrollbarStyle="outsideInset"
+                    android:theme="@style/Theme.Spinners"
+                    app:layout_constraintBottom_toTopOf="@+id/tvPlayers"
+                    app:layout_constraintEnd_toStartOf="@+id/spSettings"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_baseline_filter_list_24" />
 
                 <Spinner
-                    android:id="@+id/spinner"
+                    android:id="@+id/spSettings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="50dp"
                     android:background="@drawable/ic_baseline_arrow_drop_down_24"
-                    app:layout_constraintBottom_toTopOf="@+id/tvChallenges"
+                    android:theme="@style/Theme.Spinners"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>

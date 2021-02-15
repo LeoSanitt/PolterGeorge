@@ -3,14 +3,19 @@ package com.example.myapplication.utils
 import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.Firebase.Firestore
 import com.example.myapplication.models.Challenge
+import com.example.myapplication.models.Notification
 import com.example.myapplication.models.User
 
 object Variables {
+    var userNameLive = MutableLiveData<String>()
     var allUsers: MutableList<User> = mutableListOf()
+    var allUsersDisplay: MutableList<User> = mutableListOf()
     var allUsersLive = MutableLiveData<MutableList<User>>()
     var allChallengesLive = MutableLiveData<MutableList<Challenge>>()
     var allChallenges: MutableList<Challenge> = mutableListOf()
+    var allChallengesDisplay: MutableList<Challenge> = mutableListOf()
     var allBookings: MutableList<Challenge> = mutableListOf()
+    var allBookingsDisplay: MutableList<Challenge> = mutableListOf()
     var userClub: String = ""
     var userName: String = ""
     var challengedIdLive =  MutableLiveData<String>()
@@ -34,4 +39,8 @@ object Variables {
     var textToDisplayLive = MutableLiveData<String>()
     var message: String = ""
     var messageLive = MutableLiveData<String>()
+    var userAge: String = "0"
+    var currentFragment: String = ""
+    var allNotifications: MutableList<Notification> = mutableListOf()
+    var allNotificationsDisplay: MutableList<Notification> = mutableListOf()
 }

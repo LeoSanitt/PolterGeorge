@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="150dp"
     android:paddingStart="0dp"
     android:paddingEnd="0dp">
 
@@ -14,53 +14,43 @@
         android:text="Name"
         android:textColor="@color/TAppMainGreen"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvCourt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Court"
-        android:textColor="@color/TAppMainGreen"
-        android:textSize="20sp"
-
-        app:layout_constraintBottom_toTopOf="@+id/btnReject"
-        app:layout_constraintEnd_toStartOf="@+id/tvDay"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/tvFrom"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:text="Day"
-        android:textSize="20sp"
         android:textColor="@color/TAppMainGreen"
-        app:layout_constraintBottom_toTopOf="@+id/btnReject"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/btnAccept"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvHour"
+        android:id="@+id/tvOtherInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hour"
+        android:text="Other info"
+        android:textStyle="bold"
         android:textColor="@color/TAppMainGreen"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnReject"
-        app:layout_constraintStart_toEndOf="@+id/tvDay"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/tvAt"
+        app:layout_constraintStart_toEndOf="@+id/tvAt"
+        app:layout_constraintTop_toTopOf="@+id/tvAt" />
 
     <Button
         android:id="@+id/btnAccept"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:text="@string/accept"
         android:backgroundTint="@color/TAppMainGreen"
+        android:text="@string/accept"
         android:textColor="@color/creamy_white"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnReject"
         app:layout_constraintStart_toStartOf="parent" />
@@ -69,23 +59,66 @@
         android:id="@+id/btnReject"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:text="@string/reject"
         android:backgroundTint="@color/TAppMainGreen"
+        android:text="@string/reject"
         android:textColor="@color/creamy_white"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnAccept" />
 
     <TextView
-        android:id="@+id/tvMessage"
+        android:id="@+id/tvMonth"
         android:layout_width="wrap_content"
-        android:layout_height="25sp"
-        android:layout_marginBottom="12dp"
-        android:text="@string/message"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Month"
+        android:textColor="@color/TAppMainGreen"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDay" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvMonth"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvDay"
+        app:srcCompat="@drawable/ic_baseline_message_24" />
+
+    <TextView
+        android:id="@+id/tvFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="From: "
         android:textColor="@color/TAppMainGreen"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnReject"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="at "
+        android:textColor="@color/TAppMainGreen"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvMonth"
+        app:layout_constraintStart_toEndOf="@+id/tvDay"
+        app:layout_constraintTop_toTopOf="@+id/tvDay" />
+
+    <TextView
+        android:id="@+id/tvCourt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Court"
+        android:textSize="20sp"
+        android:textColor="@color/TAppMainGreen"
+        app:layout_constraintBottom_toBottomOf="@+id/tvOtherInfo"
+        app:layout_constraintStart_toEndOf="@+id/tvOtherInfo"
+        app:layout_constraintTop_toTopOf="@+id/tvOtherInfo" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

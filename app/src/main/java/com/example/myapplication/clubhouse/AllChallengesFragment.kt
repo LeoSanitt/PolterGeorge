@@ -27,8 +27,8 @@ class AllChallengesFragment : Fragment(R.layout.fragment_all_challenges), Challe
 
 
     override fun onAccept(position: Int) {
-        Firestore().acceptChallenge(Variables.allChallenges[position])
-        Variables.allChallenges.removeAt(position)
+        Firestore().acceptChallenge(Variables.allChallengesDisplay[position])
+        Variables.allChallengesDisplay.removeAt(position)
         setUpRV()
         Variables.textToDisplayLive.observe(this, androidx.lifecycle.Observer {
             Toast.makeText(context, Variables.textToDisplay, Toast.LENGTH_SHORT).show()
@@ -36,13 +36,13 @@ class AllChallengesFragment : Fragment(R.layout.fragment_all_challenges), Challe
     }
 
     override fun onReject(position: Int) {
-        Firestore().rejectChallenge(Variables.allChallenges[position])
-        Variables.allChallenges.removeAt(position)
+        Firestore().rejectChallenge(Variables.allChallengesDisplay[position])
+        Variables.allChallengesDisplay.removeAt(position)
         setUpRV()
         Toast.makeText(context, "Booking rejected", Toast.LENGTH_SHORT).show()
     }
     private fun setUpRV(){
-        rvChallenges.adapter = ChallengesAdapter(Variables.allChallenges, this)
+        rvChallenges.adapter = ChallengesAdapter(Variables.allChallengesDisplay, this)
         rvChallenges.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         rvChallenges.layoutManager = LinearLayoutManager(context)
     }

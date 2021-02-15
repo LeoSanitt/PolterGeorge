@@ -1,8 +1,11 @@
 package com.example.myapplication.Firebase
 import android.content.Context
+import android.content.Intent
 import android.service.notification.Condition.newId
 import android.util.Log
 import android.widget.Toast
+import androidx.core.app.ActivityCompat.startActivityForResult
+import com.example.myapplication.clubhouse.AdditionalInfo
 import com.example.myapplication.models.*
 import com.example.myapplication.utils.Constants
 import com.example.myapplication.utils.Variables
@@ -19,11 +22,19 @@ import java.util.*
 class Firestore {
     val mFirestore = FirebaseFirestore.getInstance()
     fun getAllClubs(){
+        Log.d("DEETS", "testing")
+        val clubNames = mutableListOf<String>()
         mFirestore.collection(Constants.CLUBS).get().addOnSuccessListener { result ->
+            Log.d("DEETS", result.toString())
             for(club in result){
-                Variables.allClubs.add(club.toObject(Club::class.java).name)
+                Log.d("DEETS", club.toObject(Club::class.java).name)
+                val name = club.toObject(Club::class.java).name
+                clubNames.add(name)
+                Log.d("DEETS DEETS", clubNames.toString())
             }
+            Variables.allClubs = clubNames
         }
+
     }
     fun getNameWithId(id: String){
         mFirestore.collection(Constants.USERSNOTCLUBS).document(id).get().addOnSuccessListener { document ->
@@ -31,22 +42,25 @@ class Firestore {
             Variables.challengedIdLive.apply { postValue(Variables.challengedName) }
         }
     }
-    fun registerUser(userInfo: User, club: String) {
-        mFirestore.collection(Constants.CLUBS).document(club).collection(Constants.USERS).document(userInfo.userId)
-                .set(userInfo, SetOptions.merge())
+    fun registerUser(userInfo: User) {
         mFirestore.collection(Constants.USERSNOTCLUBS).document(userInfo.userId).set(userInfo, SetOptions.merge())
     }
 
-    fun addInfo(age: String, gender: String, level: String) {
+    fun addInfo(age: String, club: String, name: String) {
         val id = getUserId()
-        mFirestore.collection(Constants.USERSNOTCLUBS).document(id).get()
-                .addOnSuccessListener { document ->
-                    Variables.userClub = document.toObject(User::class.java)!!.userClub
-                    Variables.userName = document.toObject(User::class.java)!!.userName
-                    mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.USERS)
-                            .document(id).set(age, SetOptions.merge())
-                    mFirestore.collection(Constants.USERSNOTCLUBS).document(id).set(age, SetOptions.merge())
-                }
+        val data = hashMapOf("userClub" to club, "userAge" to age, "userName" to name)
+        mFirestore.collection(Constants.USERSNOTCLUBS).document(id).set(data, SetOptions.merge()).addOnSuccessListener {
+            mFirestore.collection(Constants.USERSNOTCLUBS).document(id).get()
+                    .addOnSuccessListener { document ->
+                        Variables.userClub = document.toObject(User::class.java)!!.userClub
+                        Variables.userName = document.toObject(User::class.java)!!.userName
+                        mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.USERS)
+                                .document(id).set(document.toObject(User::class.java)!!, SetOptions.merge())
+                    }
+                    .addOnSuccessListener {
+                        userInfo()
+                    }
+        }
 
     }
 
@@ -65,7 +79,9 @@ class Firestore {
             .addOnSuccessListener { document ->
                 val thisUser = document.toObject(User::class.java)
                 Variables.userClub = thisUser!!.userClub
+                Variables.userAge = thisUser!!.userAge
                 Variables.userName = thisUser.userName
+                Variables.userNameLive.apply{setValue(Variables.userName)}
                 val users = mutableListOf<User>()
                 Log.d("checking whether club", Variables.userClub)
                 mFirestore.collection(Constants.CLUBS).document(Variables.userClub)
@@ -83,6 +99,7 @@ class Firestore {
                         )
                     }
                     Variables.allUsers = users
+                    Variables.allUsersDisplay = users
                     Variables.allUsersLive.setValue(users)
                 }
                 mFirestore.collection(Constants.CLUBS).document(Variables.userClub)
@@ -93,6 +110,7 @@ class Firestore {
                         for (challenge in result) {
                             Variables.allChallenges.add(challenge.toObject(Challenge::class.java))
                         }
+                        Variables.allChallengesDisplay = Variables.allChallenges
                     }
                 mFirestore.collection(Constants.CLUBS).document(Variables.userClub)
                     .collection(Constants.CHALLENGES)
@@ -109,6 +127,7 @@ class Firestore {
                                 Variables.allChallenges.add(toAdd)
                             }
                         }
+                        Variables.allChallengesDisplay = Variables.allChallenges
                     }
                 mFirestore.collection(Constants.CLUBS).document(Variables.userClub)
                     .collection(Constants.BOOKINGS).get().addOnSuccessListener { result ->
@@ -125,8 +144,7 @@ class Firestore {
                         for (booking in result) {
                             Variables.allBookings.add(booking.toObject(Challenge::class.java))
                         }
-                        Log.d("YIPEE", result.toString())
-
+                        Variables.allBookingsDisplay = Variables.allBookings
                     }
                 mFirestore.collection(Constants.CLUBS).document(Variables.userClub)
                     .collection(Constants.CHALLENGES)
@@ -141,6 +159,7 @@ class Firestore {
                             Variables.allBookings.add(toAdd)
 
                         }
+                        Variables.allBookingsDisplay = Variables.allBookings
                     }
 
             }
@@ -152,7 +171,7 @@ class Firestore {
             accept = true
         }
         mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES).add(Challenge(
-            players=mutableListOf(Variables.id, Variables.challengedId), fromName=Variables.userName, toName=Variables.challengedName, court=court, date=Variables.date, hour=hour, accepted = accept, message = Variables.message))
+            players=mutableListOf(Variables.id, Variables.challengedId), fromName=Variables.userName, toName=Variables.challengedName, court=court, date=Variables.date, hour=hour, accepted = accept))
             .addOnSuccessListener { documentReference ->
                 documentReference.update("uniqueId",documentReference.id)
 
@@ -210,5 +229,28 @@ class Firestore {
     fun cancelBooking(challenge: Challenge) {
         mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES).document(challenge.uniqueId).update("accepted", false)
         mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES).document(challenge.uniqueId).update("rejected", true)
+    }
+    fun getAllUsers(){
+        val users = mutableListOf<User>()
+        if (Variables.userClub!="") {
+            mFirestore.collection(Constants.CLUBS).document(Variables.userClub)
+                    .collection(Constants.USERS).get().addOnSuccessListener { result ->
+                        for (document in result) {
+                            val currentPlayer = document.toObject(User::class.java)
+                            users.add(
+                                    User(
+                                            currentPlayer.userName,
+                                            currentPlayer.userId,
+                                            currentPlayer.userAge,
+                                            currentPlayer.userGender,
+                                            Variables.userClub
+                                    )
+                            )
+                        }
+                        Variables.allUsers = users
+                        Variables.allUsersLive.setValue(users)
+
+                    }
+        }
     }
 }

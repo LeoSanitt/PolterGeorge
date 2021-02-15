@@ -11,7 +11,6 @@ class Challenge (
         val court: String = "",
         val date: String = "",
         val hour: String = "",
-        val message: String = "",
         val accepted: Boolean = false,
         val rejected: Boolean = false,
         val uniqueId: String = ""

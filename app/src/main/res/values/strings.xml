@@ -34,5 +34,12 @@
     <string name="notifications">NOTIFICATIONS</string>
     <string name="make_booking">Making booking</string>
     <string name="message">Message</string>
-
+    <string name="register">Register</string>
+    <string name="club">Club</string>
+    <string name="name">name</string>
+    <string name="MatchPoint">MatchPoint</string>
+    <string-array name="filter">
+        <item>No Filter</item>
+        <item>Filter by age</item>
+    </string-array>
 </resources>

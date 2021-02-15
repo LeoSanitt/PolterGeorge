@@ -48,15 +48,15 @@ class ChallengesAdapter (
     override fun onBindViewHolder(holder: ChallengesViewHolder, position: Int) {
         holder.itemView.apply {
             if (Challenges[position].players[0]==Variables.id) {
-                tvName.text = "From " + Challenges[position].fromName
+                tvName.text = Challenges[position].fromName
             }
             else{
-                tvName.text = "From" + Challenges[position].toName
+                tvName.text = Challenges[position].toName
             }
-            tvCourt.text = "on " + Challenges[position].court + " "
-            tvDay.text = "on " + Challenges[position].date + " "
-            tvHour.text = "at " + Challenges[position].hour
-            tvMessage.text = "Message: " + Challenges[position].message
+            tvMonth.text = Challenges[position].date.split("-")[2]
+            tvDay.text = Challenges[position].date.split("-")[1]
+            tvOtherInfo.text =  Challenges[position].hour
+            tvCourt.text = " on " + Challenges[position].court
         }
     }
     interface OnItemClickListener{

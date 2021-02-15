@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_player_list.*
 class PlayerList : Fragment(R.layout.fragment_player_list), PlayerAdapter.OnItemClickListener
     {
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            rvPlayers.adapter = PlayerAdapter(Variables.allUsers, this)
+            rvPlayers.adapter = PlayerAdapter(Variables.allUsersDisplay, this)
             rvPlayers.addItemDecoration(
                 DividerItemDecoration(
                     context,
