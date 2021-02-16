@@ -1,6 +1,7 @@
 package com.example.myapplication.utils
 
 object Constants {
+    const val NOTIFICATIONS: String = "Notifications"
     const val PLAYERS: String = "players"
     const val NONAME: String = "IDONTEXIST"
     const val BOOKINGS: String = "Bookings"

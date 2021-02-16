@@ -11,6 +11,7 @@
         android:id="@+id/tvChallengedName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/dark_green"
         android:text="This will be filled in"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"

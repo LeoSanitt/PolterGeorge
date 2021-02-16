@@ -10,8 +10,7 @@ import kotlinx.android.synthetic.main.sp_filter_open.view.*
 
 class spFilterAdapter(context: Context, optionsList: Array<String>) : ArrayAdapter<String>(context, 0, optionsList){
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val view = convertView?: LayoutInflater.from(context).inflate(R.layout.sp_filter_closed, parent, false)
-        return view
+        return convertView?: LayoutInflater.from(context).inflate(R.layout.sp_filter_closed, parent, false)
     }
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {

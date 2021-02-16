@@ -22,15 +22,11 @@ import java.util.*
 class Firestore {
     val mFirestore = FirebaseFirestore.getInstance()
     fun getAllClubs(){
-        Log.d("DEETS", "testing")
         val clubNames = mutableListOf<String>()
         mFirestore.collection(Constants.CLUBS).get().addOnSuccessListener { result ->
-            Log.d("DEETS", result.toString())
             for(club in result){
-                Log.d("DEETS", club.toObject(Club::class.java).name)
                 val name = club.toObject(Club::class.java).name
                 clubNames.add(name)
-                Log.d("DEETS DEETS", clubNames.toString())
             }
             Variables.allClubs = clubNames
         }
@@ -83,9 +79,8 @@ class Firestore {
                 Variables.userName = thisUser.userName
                 Variables.userNameLive.apply{setValue(Variables.userName)}
                 val users = mutableListOf<User>()
-                Log.d("checking whether club", Variables.userClub)
                 mFirestore.collection(Constants.CLUBS).document(Variables.userClub)
-                    .collection(Constants.USERS).get().addOnSuccessListener { result ->
+                    .collection(Constants.USERS).whereNotEqualTo("userId", Variables.id).get().addOnSuccessListener { result ->
                     for (document in result) {
                         val currentPlayer = document.toObject(User::class.java)
                         users.add(
@@ -161,6 +156,7 @@ class Firestore {
                         }
                         Variables.allBookingsDisplay = Variables.allBookings
                     }
+                getNotifications()
 
             }
     }
@@ -205,18 +201,33 @@ class Firestore {
 
     fun rejectChallenge(challenge: Challenge){
         mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES).document(challenge.uniqueId).update("rejected", true)
+        mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES).document(challenge.uniqueId).get().addOnSuccessListener { result->
+            val concerning = if (challenge.players[0]==Variables.id){
+                challenge.players[1]
+            } else{
+                challenge.players[0]
+            }
+            val title = "Reject"
+            val message = challenge.toName + " rejected your challenge for a match on " + challenge.court + " at " + challenge.date
+            createNotification(concerning, title, message)
+        }
+
     }
     fun acceptChallenge(challenge: Challenge){
         mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES)
             .whereEqualTo("accepted", true).whereEqualTo("date", challenge.date).whereEqualTo("hour", challenge.hour).get().addOnSuccessListener { result ->
                 if(result.isEmpty){
-                    mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES).document(challenge.uniqueId).update("accepted", true)
+                    mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES).document(challenge.uniqueId).update("accepted", true).addOnSuccessListener {
+                        makeNotificationFromAccept(challenge, true)
+                    }
                     Variables.textToDisplay = "Booking made!"
                     Variables.textToDisplayLive.apply{setValue(Variables.textToDisplay)}
                 }
 
                 else {
-                    mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES).document(challenge.uniqueId).update("rejected", true)
+                    mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES).document(challenge.uniqueId).update("rejected", true).addOnSuccessListener {
+                        makeNotificationFromAccept(challenge, false)
+                    }
                     Variables.textToDisplay = "Booking failed - time already taken"
                     Variables.textToDisplayLive.apply{setValue(Variables.textToDisplay)}
                 }
@@ -225,10 +236,43 @@ class Firestore {
 
 
     }
+    private fun makeNotificationFromAccept(challenge: Challenge, accept: Boolean){
+        mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES).document(challenge.uniqueId).get().addOnSuccessListener { result->
+            val concerning = if (challenge.players[0]==Variables.id){
+                challenge.players[1]
+            } else{
+                challenge.players[0]
+            }
+            if (accept){
+                val title = "Accept"
+                val message = challenge.toName + " accepted your challenge for a match on " + challenge.court + " at " + challenge.date
+                createNotification(concerning, title, message)
+            }
+            else{
+                val title = "Failed accept"
+                val message = challenge.toName + " tried to accept your challenge for a match on " + challenge.court + " at " + challenge.date + "but the time was already taken"
+                createNotification(concerning, title, message)
+            }
+        }
+    }
 
     fun cancelBooking(challenge: Challenge) {
         mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES).document(challenge.uniqueId).update("accepted", false)
         mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.CHALLENGES).document(challenge.uniqueId).update("rejected", true)
+        val concerning = if (challenge.players[0]==Variables.id){
+            challenge.players[1]
+        } else{
+            challenge.players[0]
+        }
+        val name = if (challenge.toName==Variables.userName){
+            challenge.fromName
+        } else{
+            challenge.toName
+        }
+        createNotification(concerning, "Cancelled booking", name + " cancelled the booking on court " + challenge.court + " at " + challenge.date)
+    }
+    fun deleteNotification(notification: Notification){
+        mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.NOTIFICATIONS).document(notification.uniqueId).delete()
     }
     fun getAllUsers(){
         val users = mutableListOf<User>()
@@ -251,6 +295,35 @@ class Firestore {
                         Variables.allUsersLive.setValue(users)
 
                     }
+        }
+    }
+    fun createNotification(concerning: String, title: String, message: String){
+        mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.NOTIFICATIONS).add(Notification(concerning = concerning, title = title, message = message))
+                .addOnSuccessListener { documentReference ->
+                    documentReference.update("uniqueId",documentReference.id)
+
+                }
+    }
+    fun getNotifications(){
+        mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.NOTIFICATIONS).whereEqualTo("concerning", Variables.id).get().addOnSuccessListener { result ->
+            Variables.allNotifications = mutableListOf()
+
+            for (notification in result) {
+                Variables.allNotifications.add(notification.toObject(Notification::class.java))
+            }
+            Variables.allNotificationsDisplay = Variables.allNotifications
+        }
+        mFirestore.collection(Constants.CLUBS).document(Variables.userClub).collection(Constants.NOTIFICATIONS).whereEqualTo("concerning", Variables.id).addSnapshotListener { snapshots, error ->
+            if (error != null) {
+                return@addSnapshotListener
+            }
+            Variables.allNotifications = mutableListOf()
+            for (notification in snapshots!!) {
+                val toAdd = notification.toObject(Notification::class.java)
+                Variables.allNotifications.add(toAdd)
+
+            }
+            Variables.allNotificationsDisplay = Variables.allNotifications
         }
     }
 }

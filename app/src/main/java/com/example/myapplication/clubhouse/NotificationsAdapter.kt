@@ -35,7 +35,7 @@ class NotificationsAdapter (
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationsViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.bookings_qreq, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.notifications_qreq, parent, false)
         return NotificationsViewHolder(view)
     }
     override fun getItemCount(): Int {

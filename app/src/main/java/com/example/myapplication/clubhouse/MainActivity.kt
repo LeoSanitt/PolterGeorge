@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -17,6 +16,7 @@ import com.example.myapplication.R
 import com.example.myapplication.models.User
 import com.example.myapplication.utils.Constants
 import com.example.myapplication.utils.Variables
+import com.google.errorprone.annotations.Var
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -34,12 +34,13 @@ class MainActivity : AppCompatActivity() {
     // TODO over the next week
     /*
     Take away messages from challenges - its not worth having (tick =  true)
-    Add sending notifications to people (tick =  false)
-    Add notifications for accepts, rejects, and for messages that people sent  (tick =  false)
+    Add sending notifications to people (tick =  false) - will not do with minimum functionality
+    Add notifications for accepts and rejects (tick =  true)
     Change how the sign in system works - firstly ONLY phone number and then everything else (including club and name) (tick =  true)
-    Add uses for everything in the toolbar (tick =  false)
-    DONE :):):):):) (tick =  false)
+    Add uses for everything in the toolbar (tick =  true)
+    DONE :):):):):) (tick =  true)
     ->
+    clean up code (tick = false)
     try to get someplace using it (tick =  false)
     */
     private lateinit var auth: FirebaseAuth
@@ -73,24 +74,28 @@ class MainActivity : AppCompatActivity() {
         spFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedItem = parent!!.getItemAtPosition(position)
-                if (selectedItem=="Filter by age"){
-                    if (Variables.userAge==""){
-                        Toast.makeText(applicationContext, "You have not given your age", Toast.LENGTH_SHORT).show()
-                    }
-                    else {
-                        val usersCloseToAge = mutableListOf<User>()
-                        for (player in Variables.allUsers) {
-                            if (player.userAge == Variables.userAge) {
-                                usersCloseToAge.add(player)
+                if (Variables.currentFragment=="PlayerListFragment") {
+                    if (selectedItem == "Filter by age") {
+                        if (Variables.userAge == "") {
+                            Toast.makeText(applicationContext, "You have not given your age", Toast.LENGTH_SHORT).show()
+                        } else {
+                            val usersCloseToAge = mutableListOf<User>()
+                            for (player in Variables.allUsers) {
+                                if (player.userAge == Variables.userAge) {
+                                    usersCloseToAge.add(player)
+                                }
                             }
+                            Variables.allUsersDisplay = usersCloseToAge
+                            loadPlayerList()
                         }
-                        Variables.allUsersDisplay = usersCloseToAge
+                    }
+                    if (selectedItem == "No filter") {
+                        Variables.allUsersDisplay = Variables.allUsers
                         loadPlayerList()
                     }
                 }
-                if (selectedItem=="No filter"){
-                    Variables.allUsersDisplay = Variables.allUsers
-                    loadPlayerList()
+                else{
+                    spFilter.setSelection(0)
                 }
             }
 
@@ -104,14 +109,27 @@ class MainActivity : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedItem = parent!!.getItemAtPosition(position)
                 if (selectedItem=="Change profile"){
-                    spSettings.setSelection(0)
                     intent  = Intent(applicationContext, AdditionalInfo::class.java)
                     startActivity(intent)
                 }
                 if (selectedItem=="Notifications") {
-                    spSettings.setSelection(0)
                     loadNotifications()
                 }
+                if(selectedItem=="Home"){
+                    if (Variables.currentFragment=="PlayerListFragment"){
+                        loadPlayerList()
+                    }
+                    if (Variables.currentFragment=="BookingsFragment"){
+                        loadBookings()
+                    }
+                    if (Variables.currentFragment=="AllChallengesFragment") {
+                        loadAllChallengesFragment()
+                    }
+                    if (Variables.currentFragment=="NotificationsFragment") {
+                        loadPlayerList()
+                    }
+                }
+
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -199,22 +217,6 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-        /*
-        Variables.messageLive.observe(this, androidx.lifecycle.Observer {
-            Firestore().sendChallenge(
-                to = Variables.challengedId,
-                court = Variables.chosenCourt,
-                day = Variables.chosenDay,
-                hour = Variables.chosenHour
-                )
-            supportFragmentManager.beginTransaction().apply {
-                clearFragmentsFromContainer()
-                replace(R.id.flMAIN, PlayerList())
-            }
-        })
-
-         */
-
 
         Variables.chosenHourLive.observe(this, androidx.lifecycle.Observer {
             Firestore().sendChallenge(
@@ -223,10 +225,7 @@ class MainActivity : AppCompatActivity() {
                     day = Variables.chosenDay,
                     hour = Variables.chosenHour
             )
-            supportFragmentManager.beginTransaction().apply {
-                clearFragmentsFromContainer()
-                replace(R.id.flMAIN, PlayerList())
-            }
+            loadPlayerList()
         })
         Variables.chosenCourtLive.observe(this, androidx.lifecycle.Observer {
             supportFragmentManager.beginTransaction()
@@ -243,17 +242,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.app_bar_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-
-        }
-        return true
-    }
 
 
 
@@ -267,6 +255,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadAllChallengesFragment() {
+        spSettings.setSelection(0)
         Variables.currentFragment = "AllChallengesFragment"
         supportFragmentManager.beginTransaction().apply {
             clearFragmentsFromContainer()
@@ -277,6 +266,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadPlayerList() {
+        spSettings.setSelection(0)
         Variables.currentFragment = "PlayerListFragment"
         supportFragmentManager.beginTransaction().apply {
             clearFragmentsFromContainer()
@@ -287,6 +277,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadBookings() {
+        spSettings.setSelection(0)
         Variables.currentFragment = "BookingsFragment"
         supportFragmentManager.beginTransaction().apply {
             clearFragmentsFromContainer()
@@ -330,7 +321,7 @@ class MainActivity : AppCompatActivity() {
         val cal = Calendar.getInstance()
         var date = cal.time
         for (i in 1..Constants.NUMBEROFDAYS) {
-            Log.d("pleasework", overall.format(date))
+
             cal.add(Calendar.DAY_OF_YEAR, 1)
             date = cal.time
             days.add(overall.format(date))
